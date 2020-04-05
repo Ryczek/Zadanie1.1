@@ -1,6 +1,10 @@
 from fastapi import FastAPI, Request
 
+
 app = FastAPI()
+app.counter = 0
+global patients
+patients = []
 
 @app.get("/")
 def Hello_World():
