@@ -1,10 +1,19 @@
 from fastapi import FastAPI, Request
-
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 
 app = FastAPI()
 app.counter = 0
 global patients
 patients = []
+
+
+class HelloResp(BaseModel):
+    msg: str
+
+@app.get('/hello/{name}', response_model=HelloResp)
+def read_item(name: str):
+    return HelloResp(msg=f"Hello {name}")
 
 @app.get("/")
 def Hello_World():
