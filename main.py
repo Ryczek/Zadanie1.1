@@ -3,7 +3,6 @@ import secrets
 from fastapi import FastAPI, Request, Response, Depends, status, HTTPException, Cookie
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.responses import JSONResponse, RedirectResponse
-from fastapi.templating import Jinja2Templates
 
 from starlette.routing import Route
 from pydantic import BaseModel
