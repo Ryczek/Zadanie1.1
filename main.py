@@ -1,7 +1,6 @@
 from fastapi import Cookie, Depends, FastAPI, HTTPException, Request, Response, status
 from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from fastapi.templating import Jinja2Templates
 
 from pydantic import BaseModel
 
@@ -11,7 +10,6 @@ import secrets
 
 app = FastAPI()
 security = HTTPBasic()
-templates = Jinja2Templates(directory = "templates")
 
 app.counter = 0
 app.secret_key = '432A462D4A614E645267556B58703273357538782F413F4428472B4B62506553'
@@ -76,7 +74,7 @@ def welcome(request: Request, response: Response, cookie: str = Cookie(None)):
     if cookie not in app.sessions:
         raise HTTPException(status_code=401, detail="Unathorised")
     user = app.users[0]
-    return templates.TemplateResponse('welcome.html', {"request": request,"user": user})
+    return {"message": "Hello World during the coronavirus pandemic!"}
 
 @app.get('/hello/{name}', response_model=HelloResp)
 def read_item(name: str, cookie: str = Cookie(None)):
