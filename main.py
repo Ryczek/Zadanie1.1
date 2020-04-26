@@ -1,6 +1,26 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+import secrets
+
+from fastapi import FastAPI, Request, Response, Depends, status, HTTPException, Cookie
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.templating import Jinja2Templates
+
+from starlette.routing import Route
 from pydantic import BaseModel
+from hashlib import sha256
+
+
+
+app = FastAPI()
+app.secret_key = '432A462D4A614E645267556B58703273357538782F413F4428472B4B62502553'
+app.counter = 0
+app.sessions = []
+
+users = []
+
+templates = Jinja2Templates(directory="templates")
+
+security = HTTPBasic()
 
 app = FastAPI()
 app.counter = 0
