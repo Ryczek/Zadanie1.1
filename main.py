@@ -62,3 +62,38 @@ def read_patient(pk: int):
     if pk not in [i.id for i in patients]:
        return JSONResponse(status_code = 204, content = {}) 
     return patients[pk].patient
+
+def get_current_user(response: Response, credentials: HTTPBasicCredentials = Depends(security)):
+	correct_username = secrets.compare_digest(credentials.username, "trudnY")
+	correct_password = secrets.compare_digest(credentials.password, "PaC13Nt")
+	if not (correct_username and correct_password):
+		raise HTTPException(
+			status_code=status.HTTP_401_UNAUTHORIZED,
+			detail="Incorrect email or password",
+			headers={"WWW-Authenticate": "Basic"},
+		)
+	else:
+		users.clear()
+		users.append(credentials.username)
+		session_token = sha256(bytes(f"{credentials.username}{credentials.password}{app.secret_key}", encoding = 'utf8')).hexdigest()
+		app.sessions.clear()
+		app.sessions.append(session_token)
+		return session_token 
+
+@app.post('/login')
+def login(response: Response, cookie: str = Depends(get_current_user)):
+    response.set_cookie(key = 'cookie', value = cookie)
+    return RedirectResponse(url='/welcome') 
+
+@app.post('/logout')
+def wylogowanie(response: Response):
+	if len(app.sessions)!=1:
+		pass
+	else:
+		session_token = app.sessions[0]
+		response.delete_cookie(key="session_token")
+		app.sessions.clear()
+		users.clear()
+		print("wylogowano")
+	return RedirectResponse(url='/')
+
