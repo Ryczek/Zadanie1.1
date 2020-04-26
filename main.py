@@ -62,9 +62,3 @@ def read_patient(pk: int):
     if pk not in [i.id for i in patients]:
        return JSONResponse(status_code = 204, content = {}) 
     return patients[pk].patient
-
-
-@app.post('/login')
-def login(response: Response, cookie: str = Depends(get_current_user)):
-    response.set_cookie(key = 'cookie', value = cookie)
-    return RedirectResponse(url='/welcome') 
