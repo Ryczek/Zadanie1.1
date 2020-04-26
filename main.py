@@ -17,7 +17,11 @@ def read_item(name: str):
 
 @app.get("/")
 def Hello_World():
-    return {"message": "Hello World during the coronavirus pandemic!"}
+    return {"message": "Hello world!"}
+
+@app.get("/welcome")
+def Hello_World():
+    return {"message": "Hello world!"}
 
 @app.get("/method")
 def method(request: Request):
