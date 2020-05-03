@@ -117,7 +117,6 @@ async def shutdown():
 @app.get("/tracks")
 async def root():
     cursor = app.db_connection.cursor()
-    tracks = cursor.execute("SELECT name FROM tracks").fetchall()
+    tracks = cursor.execute("SELECT name, composer FROM tracks").fetchall()
     return {
-        "tracks": tracks,
-    }
+        "tracks": tracks,    }
