@@ -12,10 +12,10 @@ async def startup():
 @app.on_event("shutdown")
 async def shutdown():
     app.db_connection.close()
-
-
-@app.get("/")
+@app.get("/tracks")
 async def root():
     cursor = app.db_connection.cursor()
-    ....
-    return ...
+    tracks = cursor.execute("SELECT name FROM tracks").fetchall()
+    return {
+        "tracks": tracks,
+    }
