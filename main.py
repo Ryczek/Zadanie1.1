@@ -114,9 +114,11 @@ async def startup():
 @app.on_event("shutdown")
 async def shutdown():
     app.db_connection.close()
-@app.get("/tracks")
-async def root():
-    cursor = app.db_connection.cursor()
-    tracks = cursor.execute("SELECT name, composer FROM tracks").fetchall()
-    return {
-        "tracks": tracks,    }
+    
+@app.get('/tracks/')
+async def read_tracks(page: int = Query(0), per_page: int = Query(10)): 
+	app.db_connection.row_factory = sqlite3.Row
+	data = app.db_connection.execute(
+		"SELECT * FROM tracks ORDER BY TrackId").fetchall()
+	current_tracks = data[per_page*page:per_page*(page+1)]
+	return current_tracks
